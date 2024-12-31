@@ -32,6 +32,10 @@
    ```plaintext
    East(config)# ip routing
    ```
+4. Configure a default route pointing to the RV340 gateway:
+   ```plaintext
+   East(config)# ip route 0.0.0.0 0.0.0.0 172.20.10.254
+   ```
 
 ### B. VLAN Configuration
 1. Create VLAN 10 and name it "Server":
@@ -43,7 +47,7 @@
 2. Assign IP address to VLAN 10 interface:
    ```plaintext
    East(config)# interface vlan 10
-   East(config-if)# ip address 172.20.10.1 255.255.255.0
+   East(config-if)# ip address 172.20.10.2 255.255.255.0
    East(config-if)# no shutdown
    East(config-if)# exit
    ```
@@ -71,13 +75,13 @@
    ```
 
 ### E. Configure EtherChannel for ESXi Host
-1. Create Port-Channel 1:
+1. Create Port-Channel1:
    ```plaintext
    East(config)# interface port-channel1
    East(config-if)# switchport mode trunk
    East(config-if)# switchport trunk encapsulation dot1q
    East(config-if)# switchport trunk allowed vlan 10
-   East(config-if)# description ESXi Host
+   East(config-if)# description ESXi Host 1
    ```
 2. Add `FastEthernet0/1` and `FastEthernet0/2` to the EtherChannel:
    ```plaintext
@@ -115,6 +119,10 @@
    ```plaintext
    West(config)# ip routing
    ```
+4. Configure a default route pointing to the RV340 gateway:
+   ```plaintext
+   West(config)# ip route 0.0.0.0 0.0.0.0 172.20.10.254
+   ```
 
 ### B. VLAN Configuration
 1. Create VLAN 10 and name it "Server":
@@ -126,7 +134,7 @@
 2. Assign IP address to VLAN 10 interface:
    ```plaintext
    West(config)# interface vlan 10
-   West(config-if)# ip address 172.20.10.2 255.255.255.0
+   West(config-if)# ip address 172.20.10.3 255.255.255.0
    West(config-if)# no shutdown
    West(config-if)# exit
    ```
@@ -143,20 +151,20 @@
    ```
 
 ### D. Configure EtherChannel for ESXi Host
-1. Create Port-Channel 1:
+1. Create Port-Channel2:
    ```plaintext
-   West(config)# interface port-channel1
+   West(config)# interface port-channel2
    West(config-if)# switchport mode trunk
    West(config-if)# switchport trunk encapsulation dot1q
    West(config-if)# switchport trunk allowed vlan 10
-   West(config-if)# description ESXi Host
+   West(config-if)# description ESXi Host 2
    ```
 2. Add `FastEthernet0/1` and `FastEthernet0/2` to the EtherChannel:
    ```plaintext
    West(config)# interface range FastEthernet0/1 - 2
    West(config-if-range)# switchport mode trunk
    West(config-if-range)# switchport trunk encapsulation dot1q
-   West(config-if-range)# channel-group 1 mode active
+   West(config-if-range)# channel-group 2 mode active
    West(config-if-range)# exit
    ```
 3. Verify EtherChannel configuration:
@@ -212,7 +220,7 @@
 ### B. Connectivity Testing
 1. From Switch 1 (East), ping Switch 2 (West):
    ```plaintext
-   East# ping 172.20.10.2
+   East# ping 172.20.10.3
    ```
 2. From Switch 1 (East), ping the Cisco RV340 gateway:
    ```plaintext
@@ -226,4 +234,19 @@
 
 ---
 
-This configuration checklist ensures the switches and router are properly set up for VLAN 10 trunking, EtherChannel, and backbone connectivity.
+## Checklist Summary
+1. **Switch 1 (East)**:
+   - VLAN 10 configured.
+   - Trunk on `G0/1` to Switch 2.
+   - Trunk on `F0/8` to RV340.
+   - EtherChannel configured for ESXi Host 1.
+2. **Switch 2 (West)**:
+   - VLAN 10 configured.
+   - Trunk on `G0/1` to Switch 1.
+   - EtherChannel configured for ESXi Host 2.
+3. **Cisco RV340**:
+   - VLAN 10 configured with IP `172.20.10.254/24`.
+
+---
+
+This checklist ensures the switches and router are properly configured for VLAN 10 trunking, EtherChannel, and backbone connectivity.
