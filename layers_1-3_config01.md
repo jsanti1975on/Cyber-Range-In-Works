@@ -70,7 +70,29 @@
    East(config-if)# exit
    ```
 
-### E. Save the Configuration
+### E. Configure EtherChannel for ESXi Host
+1. Create Port-Channel 1:
+   ```plaintext
+   East(config)# interface port-channel1
+   East(config-if)# switchport mode trunk
+   East(config-if)# switchport trunk encapsulation dot1q
+   East(config-if)# switchport trunk allowed vlan 10
+   East(config-if)# description ESXi Host
+   ```
+2. Add `FastEthernet0/1` and `FastEthernet0/2` to the EtherChannel:
+   ```plaintext
+   East(config)# interface range FastEthernet0/1 - 2
+   East(config-if-range)# switchport mode trunk
+   East(config-if-range)# switchport trunk encapsulation dot1q
+   East(config-if-range)# channel-group 1 mode active
+   East(config-if-range)# exit
+   ```
+3. Verify EtherChannel configuration:
+   ```plaintext
+   East# show etherchannel summary
+   ```
+
+### F. Save the Configuration
 1. Save the configuration to prevent loss:
    ```plaintext
    East# write memory
@@ -120,7 +142,29 @@
    West(config-if)# exit
    ```
 
-### D. Save the Configuration
+### D. Configure EtherChannel for ESXi Host
+1. Create Port-Channel 1:
+   ```plaintext
+   West(config)# interface port-channel1
+   West(config-if)# switchport mode trunk
+   West(config-if)# switchport trunk encapsulation dot1q
+   West(config-if)# switchport trunk allowed vlan 10
+   West(config-if)# description ESXi Host
+   ```
+2. Add `FastEthernet0/1` and `FastEthernet0/2` to the EtherChannel:
+   ```plaintext
+   West(config)# interface range FastEthernet0/1 - 2
+   West(config-if-range)# switchport mode trunk
+   West(config-if-range)# switchport trunk encapsulation dot1q
+   West(config-if-range)# channel-group 1 mode active
+   West(config-if-range)# exit
+   ```
+3. Verify EtherChannel configuration:
+   ```plaintext
+   West# show etherchannel summary
+   ```
+
+### E. Save the Configuration
 1. Save the configuration to prevent loss:
    ```plaintext
    West# write memory
@@ -129,7 +173,6 @@
 ---
 
 ## 4. Configure the Cisco RV340
-
 1. Log in to the Cisco RV340 web interface.
 2. Navigate to **LAN > VLAN Settings**.
 3. Create VLAN 10:
@@ -144,7 +187,6 @@
 ## 5. Test and Verify Configuration
 
 ### A. On Both Switches
-
 1. Verify VLAN configuration:
    ```plaintext
    Switch# show vlan brief
@@ -157,46 +199,31 @@
    ```
    - Confirm `GigabitEthernet0/1` and `FastEthernet0/8` are in trunk mode.
 
-3. Verify IP interface configuration:
+3. Verify EtherChannel configuration:
+   ```plaintext
+   Switch# show etherchannel summary
+   ```
+
+4. Verify IP interface configuration:
    ```plaintext
    Switch# show ip interface brief
    ```
 
 ### B. Connectivity Testing
-
 1. From Switch 1 (East), ping Switch 2 (West):
    ```plaintext
    East# ping 172.20.10.2
    ```
-
 2. From Switch 1 (East), ping the Cisco RV340 gateway:
    ```plaintext
    East# ping 172.20.10.254
    ```
-
 3. From Switch 2 (West), ping the Cisco RV340 gateway:
    ```plaintext
    West# ping 172.20.10.254
    ```
-
 4. Connect a device on VLAN 10 to verify end-to-end connectivity.
 
 ---
 
-## Checklist Summary
-
-1. **Switch 1 (East)**:
-   - VLAN 10 configured.
-   - Trunk on `G0/1` to Switch 2.
-   - Trunk on `F0/8` to RV340.
-
-2. **Switch 2 (West)**:
-   - VLAN 10 configured.
-   - Trunk on `G0/1` to Switch 1.
-
-3. **Cisco RV340**:
-   - VLAN 10 configured with IP `172.20.10.254/24`.
-
----
-
-This checklist ensures the switches and router are correctly configured for VLAN 10 trunking and backbone connectivity.
+This configuration checklist ensures the switches and router are properly set up for VLAN 10 trunking, EtherChannel, and backbone connectivity.
