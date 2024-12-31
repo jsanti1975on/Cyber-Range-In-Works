@@ -2,7 +2,7 @@
 
 ## Overview
 
-This repository hosts the source code and configuration files for the **CyberLab Dashboard**, which runs on a **Raspberry Pi 4** with **Debian Bookworm 12** installed. The Raspberry Pi also runs **Pi-hole** to act as a web application, integrating network security and file automation features.
+This repository hosts the source code and configuration files for the **CyberLab Dashboard**, which runs on a **Raspberry Pi 4** with **Debian Bookworm 12** installed. The Raspberry Pi also runs **Pi-hole** to act as a web application, integrating network security and file automation features. Note: The Dashboard is now part of a larger project!
 
 ## Project Structure
 
