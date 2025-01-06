@@ -1,3 +1,8 @@
+![work-in-progress](https://github.com/user-attachments/assets/b8b88426-cb0e-419d-9c8a-20fcc47d4c5a)
+```
+!!! Works In Progress - I am taking my 2nd Linux course along with Information Security this spring semester 2025.
+- From cyber labs to cyber ranges to cyber stadiums - I plan on the range {^_^} LOOKEY_Flag.
+```
 # CyberLab Dashboard - Raspberry Pi 4 Project
 
 ## Overview
