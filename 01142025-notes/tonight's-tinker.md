@@ -12,6 +12,7 @@ EtherChannel not configured yet
 
 ```bash
 PiHole up but using deaults, along with pfSence and cyber-dash/web-application "review firewalls this Spring 2025 semester and test rss feed for Security Week".
+```
 ![pfSence](https://github.com/user-attachments/assets/ba8dbae4-d40e-4fc9-b143-a01d392ffe6a)
 ![sinkhole-not-configured](https://github.com/user-attachments/assets/5ab416a0-09d4-4a79-9b20-66d2afd8b386)
 ![webserver-up](https://github.com/user-attachments/assets/966b95d6-ae10-44b1-b81c-b35383c57e39)
